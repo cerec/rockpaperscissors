@@ -95,4 +95,4 @@ function playGame() {
 }
 
 //Here function playGame is called to start the game
-playGame();
+//playGame();
