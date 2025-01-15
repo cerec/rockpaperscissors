@@ -21,13 +21,30 @@ function getComputerChoice() {
 
 //Function to get the user choice via prompt
 function getHumanChoice() {
-    let choice = prompt("Rock, Paper or Scissors?").toLowerCase()
-    while (choice !== "rock" && choice !== "paper" && choice !== "scissors") {
-        console.log("invalid answer")
-        choice = prompt("Rock, Paper or Scissors?").toLowerCase()
-    }
-    console.log("You have played " + choice)
-    return choice
+    let choice = ""
+
+    let container = document.querySelector("#rpscontainer")
+    let rock = container.children[0];
+    let paper = container.children[1]
+    let scissors = container.children[2]
+
+    rock.addEventListener("click", () => {
+        choice = "rock"
+        console.log("You have played " + choice)
+        return choice
+    })
+
+    paper.addEventListener("click", () => {
+        choice = "paper"
+        console.log("You have played " + choice)
+        return choice
+    })
+    scissors.addEventListener("click", () => {
+        choice = "scissors"
+        console.log("You have played " + choice)
+        return choice
+    })
+
 }
 
 //function to return the winner of a round
@@ -57,9 +74,8 @@ function playGame() {
     let humanScore = 0
     let computerScore = 0
 
-    //loop to play 5 games in total thanks to a counter variable that increments at the end of an iteration
-    counter = 0
-    while (counter < 5) {
+    //loop to play until someone obtains 5 points
+    while (humanScore < 5 && computerScore < 5) {
         const humanSelection = getHumanChoice();
         const computerSelection = getComputerChoice();
         let winner = playRound(humanSelection, computerSelection)
@@ -81,7 +97,6 @@ function playGame() {
         }
 
         console.log("Score:" + '\n' + "You: " + humanScore + '\n' + "Computer: " + computerScore)
-        counter++;
     }
     //check for the winner using the score values
     if (humanScore > computerScore) {
@@ -96,3 +111,4 @@ function playGame() {
 
 //Here function playGame is called to start the game
 //playGame();
+getHumanChoice();
