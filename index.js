@@ -19,96 +19,84 @@ function getComputerChoice() {
     return choice;
 }
 
-//Function to get the user choice via prompt
-function getHumanChoice() {
-    let choice = ""
-
-    let container = document.querySelector("#rpscontainer")
-    let rock = container.children[0];
-    let paper = container.children[1]
-    let scissors = container.children[2]
-
-    rock.addEventListener("click", () => {
-        choice = "rock"
-        console.log("You have played " + choice)
-        return choice
-    })
-
-    paper.addEventListener("click", () => {
-        choice = "paper"
-        console.log("You have played " + choice)
-        return choice
-    })
-    scissors.addEventListener("click", () => {
-        choice = "scissors"
-        console.log("You have played " + choice)
-        return choice
-    })
-
-}
-
-//function to return the winner of a round
 function playRound(humanChoice, computerChoice) {
-    let winner = ""
+
+    const scores = { human: 0, computer: 0 };
+    scoreContainer.children[0].textContent = scores.human;
+    scoreContainer.children[2].textContent = scores.computer;
+
     if (humanChoice == computerChoice) {
-        winner = "noone"
+        document.querySelector(".msg").textContent = "Draw, no points"
     }
     else if ((humanChoice === "rock" && computerChoice === "paper") ||
         (humanChoice === "paper" && computerChoice === "scissors") ||
         (humanChoice === "scissors" && computerChoice === "rock")) {
-        winner = "computer"
-
+        document.querySelector(".msg").textContent = "Point for computer"
+        scores.computer++;
     }
     else {
-        winner = "human"
+        document.querySelector(".msg").textContent = "Point for you"
+        scores.human++;
     }
-    return winner
+
+    scoreContainer.children[0].textContent = scores.human;
+    scoreContainer.children[2].textContent = scores.computer;
+
+    if (scores.human === 5) {
+        document.querySelector(".winnername").textContent = "You"
+        resetGame(scores);
+    }
+
+    if (scores.computer === 5) {
+        document.querySelector(".winnername").textContent = "Computer"
+        resetGame(scores);
+    }
 
 }
 
 //main function
 function playGame() {
-
+    document.querySelector("#again").style.display = "none"
+    document.querySelector(".winnername").textContent = "???"
+    container.style.opacity = "1"
+    container.style.pointerEvents = "auto"
     console.log("Game has started!")
-    //declaration of Score variables
-    let humanScore = 0
-    let computerScore = 0
-
-    //loop to play until someone obtains 5 points
-    while (humanScore < 5 && computerScore < 5) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        let winner = playRound(humanSelection, computerSelection)
-
-        switch (winner) {
-            case "noone":
-                console.log("Draw, no points")
-                break;
-            case "computer":
-                console.log("Computer won!")
-                computerScore++;
-                break
-            case "human":
-                console.log("You won!")
-                humanScore++;
-                break
-            default:
-                break;
-        }
-
-        console.log("Score:" + '\n' + "You: " + humanScore + '\n' + "Computer: " + computerScore)
-    }
-    //check for the winner using the score values
-    if (humanScore > computerScore) {
-        console.log("The winner is you!")
-    } else if (humanScore < computerScore) {
-        console.log("The winner is computer!")
-    } else {
-        console.log("We have a draw!")
-    }
-
 }
 
+function resetGame(scores) {
+    scores.human = 0;
+    scores.computer = 0;
+    container.style.opacity = "0.2"
+    container.style.pointerEvents = "none"
+    document.querySelector("#again").style.display = "block"
+
+}
+document.querySelector("#again").addEventListener("click", playGame);
+
+const container = document.querySelector("#rpscontainer")
+const scoreContainer = document.querySelector("#scorecontainer")
+
+const rock = container.children[0];
+const paper = container.children[1]
+const scissors = container.children[2]
+
+//listeners for human selection
+rock.addEventListener("click", () => {
+    console.log("You have played rock")
+    const computerSelection = getComputerChoice();
+    playRound("rock", computerSelection)
+})
+
+paper.addEventListener("click", () => {
+    console.log("You have played paper")
+    const computerSelection = getComputerChoice();
+    playRound("paper", computerSelection)
+})
+scissors.addEventListener("click", () => {
+    console.log("You have played scissors")
+    const computerSelection = getComputerChoice();
+    playRound("scissors", computerSelection)
+})
+
 //Here function playGame is called to start the game
-//playGame();
-getHumanChoice();
+playGame();
