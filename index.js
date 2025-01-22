@@ -21,10 +21,6 @@ function getComputerChoice() {
 
 function playRound(humanChoice, computerChoice) {
 
-    const scores = { human: 0, computer: 0 };
-    scoreContainer.children[0].textContent = scores.human;
-    scoreContainer.children[2].textContent = scores.computer;
-
     if (humanChoice == computerChoice) {
         document.querySelector(".msg").textContent = "Draw, no points"
     }
@@ -32,30 +28,34 @@ function playRound(humanChoice, computerChoice) {
         (humanChoice === "paper" && computerChoice === "scissors") ||
         (humanChoice === "scissors" && computerChoice === "rock")) {
         document.querySelector(".msg").textContent = "Point for computer"
-        scores.computer++;
+        computerscore++;
     }
     else {
         document.querySelector(".msg").textContent = "Point for you"
-        scores.human++;
+        humanscore++;
     }
 
-    scoreContainer.children[0].textContent = scores.human;
-    scoreContainer.children[2].textContent = scores.computer;
+    scoreContainer.children[0].textContent = humanscore;
+    scoreContainer.children[2].textContent = computerscore;
 
-    if (scores.human === 5) {
+    if (humanscore === 5) {
         document.querySelector(".winnername").textContent = "You"
-        resetGame(scores);
+        resetGame();
     }
 
-    if (scores.computer === 5) {
+    if (computerscore === 5) {
         document.querySelector(".winnername").textContent = "Computer"
-        resetGame(scores);
+        resetGame();
     }
 
 }
 
 //main function
 function playGame() {
+    scoreContainer.children[0].textContent = 0;
+    scoreContainer.children[2].textContent = 0;
+    console.log(humanscore);
+    console.log(scoreContainer.children[0].textContent);
     document.querySelector("#again").style.display = "none"
     document.querySelector(".winnername").textContent = "???"
     container.style.opacity = "1"
@@ -63,9 +63,9 @@ function playGame() {
     console.log("Game has started!")
 }
 
-function resetGame(scores) {
-    scores.human = 0;
-    scores.computer = 0;
+function resetGame() {
+    humanscore = 0;
+    computerscore = 0;
     container.style.opacity = "0.2"
     container.style.pointerEvents = "none"
     document.querySelector("#again").style.display = "block"
@@ -73,8 +73,11 @@ function resetGame(scores) {
 }
 document.querySelector("#again").addEventListener("click", playGame);
 
+
 const container = document.querySelector("#rpscontainer")
 const scoreContainer = document.querySelector("#scorecontainer")
+let humanscore = 0
+let computerscore = 0
 
 const rock = container.children[0];
 const paper = container.children[1]
